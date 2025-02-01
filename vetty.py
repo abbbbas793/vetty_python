@@ -2,11 +2,14 @@ from flask import Flask, request, jsonify
 import requests
 from flask_swagger_ui import get_swaggerui_blueprint
 from functools import wraps
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 
-# Authentication Setup (Basic Token Authentication)
-API_TOKEN = "CG-qt5vxr1oyaT8M9uNcfFfdRJ4"
+API_TOKEN = os.getenv("API_TOKEN")
 
 def token_required(f):
     @wraps(f)
@@ -17,7 +20,6 @@ def token_required(f):
         return f(*args, **kwargs)
     return decorated
 
-# Swagger Setup
 SWAGGER_URL = "/api/docs"
 API_URL = "/static/swagger.json"
 swaggerui_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_URL)
